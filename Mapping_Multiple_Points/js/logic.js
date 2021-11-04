@@ -18,13 +18,17 @@ let streets = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{
     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
     maxZoom: 18,
     id: 'mapbox/streets-v11',
+
     // id: 'mapbox/dark-v10',
+
+
     // tileSize: 512,
     // zoomOffset: -1,
     accessToken: API_KEY
 });
 // 13.2.4 - Then we add our 'graymap' tile layer to the map.
 streets.addTo(map);
+
 
 //  Add a marker to the map for Los Angeles, California.
 // let marker = L.marker([34.0522, -118.2437]).addTo(map);
@@ -109,3 +113,4 @@ cityData.forEach(function(city) {
     .bindPopup("<h2>" + city.city + "," + city.state + "</h2> <hr> <h3>Population " + city.population.toLocaleString() + "</h3>")
     .addTo(map);
 });
+

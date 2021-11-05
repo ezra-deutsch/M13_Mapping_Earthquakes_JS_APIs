@@ -1,32 +1,87 @@
 // 13.2.4 - Add console.log to check to see if our code is working.
 console.log("working");
 
-// 13.2.4 - Create the map object with a center and zoom level.
-let map = L.map('mapid').setView([30, 30], 2);
-
 // 13.2.4 - We create the tile layer that will be the background of our map.
 let streets = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
-    //attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
     maxZoom: 18,
     id: 'mapbox/streets-v11',
-    // tileSize: 512,
-    // zoomOffset: -1,
     accessToken: API_KEY
 });
 
-// 13.2.4 - Then we add our 'graymap' tile layer to the map.
-streets.addTo(map);
+// 13.2.4 - We create the tile layer that will be the background of our map.
+let satelliteStreets = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+    maxZoom: 18,
+    id: 'mapbox/satellite-streets-v11',
+    accessToken: API_KEY
+});
 
-// 13.5.3 - Accessing the airport GeoJSON URL
-let airportData = "https://raw.githubusercontent.com/ezra-deutsch/M13_Mapping_Earthquakes_JS_APIs/main/majorAirports.json";
+// Create a base layer that holds both maps.
+let baseMaps = {
+  "Streets": streets,
+  "Satellite": satelliteStreets
+};
 
-// 13.5.3 - Grabbing our GeoJSON data.
-d3.json(airportData).then(function(data) {
-    console.log(data);
+// Create the map object with center, zoom level and default layer.
+let map = L.map('mapid', {
+  center: [39.5, -98.5],
+  zoom: 3,
+  layers: [streets]
+});
+
+// Pass our map layers into our layer control and add the layer control to the map.
+L.control.layers(baseMaps).addTo(map);
+
+// Retrieve the earthquake GeoJSON data.
+d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson").then(function(data) {
   // Creating a GeoJSON layer with the retrieved data.
   L.geoJson(data).addTo(map);
 });
+
+
+
+
+
+
+
+
+
+
+
+
+// 13.2.4 - Create the map object with a center and zoom level.
+// let map = L.map('mapid').setView([30, 30], 2);
+
+
+
+// 13.2.4 - Then we add our 'graymap' tile layer to the map.
+// streets.addTo(map);
+
+// 13.5.3 - Accessing the airport GeoJSON URL
+// let airportData = "https://raw.githubusercontent.com/<GitHub_name>/Mapping_Earthquakes/main/majorAirports.json";
+
+// 13.5.3 - Grabbing our GeoJSON data.
+// d3.json(airportData).then(function(data) {
+//     console.log(data);
+//   // Creating a GeoJSON layer with the retrieved data.
+//   L.geoJson(data).addTo(map);
+// });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // 13.2.4 - Alternative Method - Create the map object with a center and zoom level.
 // let map = L.map("mapid", {
